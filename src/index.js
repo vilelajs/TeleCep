@@ -61,7 +61,7 @@ bot.start(async (ctx) => {
   const nameUser = ctx.update.message.from.first_name;
 
   await ctx.reply(
-    `E aí, ${nameUser}! 👋 Tudo certo?\n\nVocê pode me controlar enviando estes comandos:\n\n📬 CEP:\n/cep - Buscar por CEP\n/addr - Buscar por endereço\n\n🆘 Ajuda & Suporte:\n/help - Orientações de contato\n\n🔥Boas-vindas:\n/start - Iniciar o bot`
+    `E aí, ${nameUser}! 👋 Tudo certo?\n\nVocê pode me controlar enviando estes comandos:\n\n📬 CEP:\n/cep - Buscar por CEP\n/addr - Buscar por endereço\n\n🆘 Ajuda & Suporte:\n/help - Orientações de contato\n/about - Sobre este projeto\n\n🔥Boas-vindas:\n/start - Iniciar o bot`
   );
 });
 
