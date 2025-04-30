@@ -1,0 +1,47 @@
+{
+  "name": "telecep",
+  "version": "1.0.0",
+  "description": "Este bot consulta CEPs e retorna endereço, bairro, cidade e estado de forma rápida e fácil.",
+  "keywords": [
+    "cep",
+    "endereço",
+    "endereços",
+    "buscar cep",
+    "busca de endereço",
+    "telecep",
+    "bot",
+    "node bot",
+    "cep api",
+    "endereço api",
+    "cep finder",
+    "cep rápido",
+    "consulta cep",
+    "localização",
+    "endereço automático",
+    "endereço preciso",
+    "buscador de cep",
+    "cep brasil",
+    "cep br",
+    "api brasil",
+    "cep node"
+  ],
+  "homepage": "https://github.com/vilelajs/TeleCep#readme",
+  "bugs": {
+    "url": "https://github.com/vilelajs/TeleCep/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vilelajs/TeleCep.git"
+  },
+  "license": "MIT",
+  "author": "vilela",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --env-file=.env ./src/index.js"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "telegraf": "^4.16.3"
+  }
+}
