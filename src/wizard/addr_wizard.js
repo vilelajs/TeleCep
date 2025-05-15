@@ -10,7 +10,7 @@ const confirmacao = Markup.inlineKeyboard([
 
 const selecionarEstado = new Composer();
 
-selecionarEstado.action(/[A-Z]{2}/i, async (ctx) => {
+selecionarEstado.action(/[A-Z]{2}/, async (ctx) => {
   await ctx.editMessageReplyMarkup({ reply_markup: null });
   ctx.wizard.state.sigla = ctx.match[0];
   await ctx.reply("Qual nome da cidade?");
@@ -18,7 +18,7 @@ selecionarEstado.action(/[A-Z]{2}/i, async (ctx) => {
 });
 
 selecionarEstado.use(async (ctx) => {
-  await ctx.reply("❌ Dados inválidos. Selecione um estado da lista");
+  await ctx.reply("❌ Dados inválidos. Selecione um estado da lista.");
 });
 
 const confirmarBusca = new Composer();
