@@ -1,26 +1,19 @@
 import { Scenes, Composer, Markup } from "telegraf";
-
 import axios from "axios";
-
 import unidadesFederativas from "../db/unidades_federativas.js";
+import Joi from "joi";
 
 const confirmacao = Markup.inlineKeyboard([
   Markup.button.callback("✅ Sim", "s"),
   Markup.button.callback("❌ Não", "n"),
 ]);
 
-const botoes = (lista) =>
-  Markup.inlineKeyboard(
-    lista.map((objeto) => Markup.button.callback(objeto.nome, objeto.sigla)),
-    { columns: 2 }
-  );
-
 const selecionarEstado = new Composer();
 
 selecionarEstado.action(/[A-Z]{2}/i, async (ctx) => {
   await ctx.editMessageReplyMarkup({ reply_markup: null });
   ctx.wizard.state.sigla = ctx.match[0];
-  await ctx.reply("Por favor, informe o nome da cidade:");
+  await ctx.reply("Qual nome da cidade?");
   ctx.wizard.next();
 });
 
@@ -99,24 +92,54 @@ const addrWizardScene = new Scenes.WizardScene(
   async (ctx) => {
     await ctx.reply(
       "📍 Selecione o estado ou /sair para cancelar a operação.",
-      botoes(unidadesFederativas)
+      Markup.inlineKeyboard(
+        unidadesFederativas.map((objeto) =>
+          Markup.button.callback(objeto.nome, objeto.sigla)
+        ),
+        { columns: 2 }
+      )
     );
     ctx.wizard.next();
   },
   selecionarEstado,
   async (ctx) => {
     ctx.wizard.state.cidade = ctx.message.text;
-    await ctx.reply("Informe o nome da rua:");
-    ctx.wizard.next();
+    const citySchema = Joi.object({
+      city: Joi.string().min(3).max(29).required(),
+    });
+
+    const { error, value } = citySchema.validate({
+      city: ctx.wizard.state.cidade,
+    });
+
+    if (error) {
+      await ctx.reply("❌ Dados inválidos.");
+    } else {
+      await ctx.reply("Qual nome da rua?");
+      ctx.wizard.next();
+    }
   },
   async (ctx) => {
     ctx.wizard.state.rua = ctx.message.text;
-    const { sigla, cidade, rua } = ctx.wizard.state;
-    await ctx.replyWithHTML(
-      `📋 Resumo:\n\n<strong>Sigla do estado:</strong> ${sigla}\n<strong>Cidade:</strong> ${cidade}\n<strong>Rua:</strong> ${rua}\n\n<strong>Deseja confirmar a busca no sistema?</strong>`,
-      confirmacao
-    );
-    ctx.wizard.next();
+
+    const streetSchema = Joi.object({
+      street: Joi.string().min(3).max(51),
+    });
+
+    const { error, value } = streetSchema.validate({
+      street: ctx.wizard.state.rua,
+    });
+
+    if (error) {
+      await ctx.reply("❌ Dados inválidos.");
+    } else {
+      const { sigla, cidade, rua } = ctx.wizard.state;
+      await ctx.replyWithHTML(
+        `📋 Resumo:\n\n<strong>Sigla do estado:</strong> ${sigla}\n<strong>Cidade:</strong> ${cidade}\n<strong>Rua:</strong> ${rua}\n\n<strong>Deseja confirmar a busca no sistema?</strong>`,
+        confirmacao
+      );
+      ctx.wizard.next();
+    }
   },
   confirmarBusca,
   escolhaResultado
