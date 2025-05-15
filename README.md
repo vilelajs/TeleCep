@@ -48,4 +48,5 @@ npm start
 ```
 
 ## 👤 Autor
-Desenvolvido por [vilela](#) com 💙.
+Desenvolvido por [vilela](https://github.com/vilelajs) com 💙.
+
