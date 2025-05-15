@@ -1,7 +1,7 @@
 import { Telegraf, Scenes, session } from "telegraf";
 
 import cepWizardScene from "./wizard/cep_wizard.js";
-// import addrWizardScene from "./wizard/addr_wizard.js";
+import addrWizardScene from "./wizard/addr_wizard.js";
 
 import { readFileSync } from "fs";
 
@@ -20,28 +20,28 @@ if (!token) {
 const bot = new Telegraf(token);
 
 // Stages
-const stage = new Scenes.Stage([cepWizardScene]);
+const stage = new Scenes.Stage([cepWizardScene, addrWizardScene]);
 
 // Middleware
 bot.use(session());
 bot.use(stage.middleware());
 bot.use(Telegraf.log());
-bot.use(async (ctx, next) => {
-  if (ctx.update.message.from.id === Number(process.env.id)) {
-    // await ctx.reply("Ao seu dispor, mestre!");
-    next()
-  } else {
-    return await ctx.reply("Sinto muito, mas eu só falo com o meu mestre!");
-  }
-});
+// bot.use(async (ctx, next) => {
+//   if (ctx.update.message.from.id === Number(process.env.id)) {
+//     await ctx.reply("Ao seu dispor, mestre!");
+//     next()
+//   } else {
+//     return await ctx.reply("Sinto muito, mas eu só falo com o meu mestre!");
+//   }
+// });
 
 // Commands
 bot.command("cep", async (ctx) => {
   await ctx.scene.enter("cep");
 });
-// bot.command("addr", async (ctx) => {
-//   await ctx.scene.enter("addr");
-// });
+bot.command("addr", async (ctx) => {
+  await ctx.scene.enter("addr");
+});
 
 bot.command("about", async (ctx) => {
   await ctx.reply(
