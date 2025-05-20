@@ -108,7 +108,7 @@ const addrWizardScene = new Scenes.WizardScene(
       city: Joi.string().min(3).max(29).required(),
     });
 
-    const { error, value } = citySchema.validate({
+    const { error } = citySchema.validate({
       city: ctx.wizard.state.cidade,
     });
 
@@ -126,7 +126,7 @@ const addrWizardScene = new Scenes.WizardScene(
       street: Joi.string().min(3).max(51),
     });
 
-    const { error, value } = streetSchema.validate({
+    const { error } = streetSchema.validate({
       street: ctx.wizard.state.rua,
     });
 
